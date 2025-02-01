@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,17 @@ use App\Http\Controllers\Auth\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/documents', [DocumentController::class, 'create']);
+    Route::put('/documents/{id}', [DocumentController::class, 'update']);
+    Route::get('/documents', [DocumentController::class, 'index']);
+    Route::get('/documents/{id}', [DocumentController::class, 'show']);
 });
+
 
 // routes/api.php
 Route::prefix('auth')->group(function() {

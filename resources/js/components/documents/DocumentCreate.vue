@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2>{{ editing ? 'Edit Document' : 'Create Document' }}</h2>
+                <h2>Create New Document</h2>
                 <form @submit.prevent="submitDocument">
                     <div class="form-group mb-3">
                         <label for="title">Title</label>
@@ -11,6 +11,7 @@
                             type="text"
                             class="form-control"
                             id="title"
+                            placeholder="Enter document title"
                             required
                         />
                     </div>
@@ -21,52 +22,37 @@
                             class="form-control"
                             id="content"
                             rows="10"
+                            placeholder="Enter document content"
                             required
                         ></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        {{ editing ? 'Update Document' : 'Create Document' }}
+                        Create Document
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 export default {
     data() {
         return {
             title: '',
-            content: '',
-            editing: false
-        }
-    },
-    created() {
-        if (this.$route.params.id) {
-            this.fetchDocument(this.$route.params.id);
-            this.editing = true;
+            content: ''
         }
     },
     methods: {
-        async fetchDocument(documentId) {
-            try {
-                const document = await this.$store.dispatch('documents/fetchDocument', documentId);
-                this.title = document.title;
-                this.content = document.content;
-            } catch (error) {
-                console.error('Error fetching document:', error);
-            }
-        },
         async submitDocument() {
             try {
-                await this.$store.dispatch('documents/updateDocument', {
-                    id: this.$route.params.id,
+                await this.$store.dispatch('documents/createDocument', {
                     title: this.title,
                     content: this.content
                 });
                 this.$router.push({ name: 'DocumentList' });
             } catch (error) {
-                console.error('Error submitting document:', error);
+                console.error('Error creating document:', error);
             }
         }
     }

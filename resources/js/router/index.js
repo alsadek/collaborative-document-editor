@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
 
+// Importing components
+import DocumentList from '../components/documents/DocumentList.vue'
+import DocumentEditor from '../components/documents/DocumentEditor.vue'
+import DocumentView from '../components/documents/DocumentView.vue'
+import DocumentCreate from '../components/documents/DocumentCreate.vue'
 const routes = [
     {
         path: '/login',
@@ -16,20 +21,26 @@ const routes = [
     },
     {
         path: '/',
-        name: 'Dashboard',
-        component: () => import('../pages/Dashboard.vue'),
+        name: 'DocumentList',
+        component: DocumentList,
         meta: { requiresAuth: true }
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: () => import('../pages/Dashboard.vue'),
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/documents/create',
+        path: '/documents/new',
         name: 'DocumentCreate',
-        component: () => import('../pages/DocumentCreate.vue'),
+        component: DocumentCreate,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/documents/:id',
+        name: 'DocumentView',
+        component: DocumentView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/documents/:id/edit',
+        name: 'DocumentEditor',
+        component: DocumentEditor,
         meta: { requiresAuth: true }
     }
 ]
@@ -50,7 +61,7 @@ router.beforeEach((to, from, next) => {
         }
     } else if (to.matched.some(record => record.meta.guest)) {
         if (isAuthenticated) {
-            next('/dashboard')
+            next('/')
         } else {
             next()
         }

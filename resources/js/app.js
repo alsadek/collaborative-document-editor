@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 // Configure axios defaults
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
