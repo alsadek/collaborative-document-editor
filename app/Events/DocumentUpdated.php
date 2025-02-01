@@ -7,6 +7,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
 
 class DocumentUpdated
 {
@@ -21,6 +22,6 @@ class DocumentUpdated
 
     public function broadcastOn()
     {
-        return new PrivateChannel('document.' . $this->document->id);
+        return new PresenceChannel('document.' . $this->document->id);
     }
 }

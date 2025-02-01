@@ -21,17 +21,24 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
             document: {},
-            collaborators: []
+            // collaborators: []
         }
     },
     created() {
         this.fetchDocument(this.$route.params.id);
         this.listenForUpdates(this.$route.params.id);
+        this.joinDocument(this.$route.params.id);
     },
+    beforeDestroy() {
+        this.leaveDocument(this.$route.params.id);
+    },
+    
     methods: {
         async fetchDocument(documentId) {
             try {
@@ -46,6 +53,20 @@ export default {
         },
         editDocument() {
             this.$router.push({ name: 'DocumentEditor', params: { id: this.document.id } });
+        },
+        async joinDocument(documentId) {
+            try {                
+                await axios.post(`/documents/${documentId}/join`);
+            } catch (error) {
+                console.error('Error joining document:', error);
+            }
+        },
+        async leaveDocument(documentId) {
+            try {
+                await axios.post(`/documents/${documentId}/leave`);
+            } catch (error) {
+                console.error('Error leaving document:', error);
+            }
         }
     },
     computed: {

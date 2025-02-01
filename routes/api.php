@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/documents/{id}', [DocumentController::class, 'update']);
     Route::get('/documents', [DocumentController::class, 'index']);
     Route::get('/documents/{id}', [DocumentController::class, 'show']);
+    Route::post('/documents/{id}/join', [DocumentController::class, 'joinDocument']);
+    Route::post('/documents/{id}/leave', [DocumentController::class, 'leaveDocument']);
 });
 
 
