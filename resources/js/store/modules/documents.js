@@ -63,15 +63,7 @@ export default {
                 throw error.response.data
             }
         },
-        async fetchVersionHistory({ commit }, documentId) {
-            try {
-                const response = await axios.get(`/documents/${documentId}/history`)
-                commit('setVersionHistory', response.data)
-                return response.data
-            } catch (error) {
-                throw error.response.data
-            }
-        },
+        
         listenForDocumentUpdates({ commit, state }, documentId) {
             window.Pusher = Pusher;
             window.Echo = new Echo({
@@ -85,24 +77,31 @@ export default {
                     },
                 },
             });
-            console.log('Subscribing to private channel: document.' + documentId);
             window.Echo.join(`document.${documentId}`)
-                .listen('DocumentUpdated', (e) => {
-                    console.log('DocumentUpdated event received:', e);
-                    commit('setCurrentDocument', e.document);
-                })
-                .here((users) => {
-                    console.log('Presence: users here:', users);
-                    commit('setCollaborators', users);
-                })
-                .joining((user) => {
-                    console.log('Presence: user joined:', user);
-                    commit('setCollaborators', [...state.collaborators, user]);
-                })
-                .leaving((user) => {
-                    console.log('Presence: user left:', user);
-                    commit('setCollaborators', state.collaborators.filter(u => u.id !== user.id));
-                });
+            .listen('DocumentUpdated', (e) => {
+                console.log('DocumentUpdated event received:', e);
+                commit('setCurrentDocument', e.document);
+            })
+            .listen('UserJoinedDocument', (e) => {
+                console.log('UserJoinedDocument event received:', e);
+                commit('setCollaborators', [...state.collaborators, e.user]);
+            })
+            .listen('UserLeftDocument', (e) => {
+                console.log('UserLeftDocument event received:', e);
+                commit('setCollaborators', state.collaborators.filter(u => u.id !== e.user.id));
+            })
+            .here((users) => {
+                console.log('Presence: users here:', users);
+                commit('setCollaborators', users);
+            })
+            .joining((user) => {
+                console.log('Presence: user joined:', user);
+                commit('setCollaborators', [...state.collaborators, user]);
+            })
+            .leaving((user) => {
+                console.log('Presence: user left:', user);
+                commit('setCollaborators', state.collaborators.filter(u => u.id !== user.id));
+            });
 
         window.Echo.join(`document.${documentId}`)
             .notification((notification) => {

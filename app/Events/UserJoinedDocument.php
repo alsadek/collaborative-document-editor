@@ -25,9 +25,7 @@ class UserJoinedDocument implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        $channel = new PresenceChannel('document.' . $this->documentId);
-        Log::info('Broadcasting on channel:', ['channel' => 'document.' . $this->documentId]);
-        return $channel;
+        return new PresenceChannel('document.' . $this->documentId);
     }
 
     public function broadcastWith()
@@ -36,7 +34,6 @@ class UserJoinedDocument implements ShouldBroadcast
             'user' => $this->user,
             'documentId' => $this->documentId,
         ];
-        Log::info('Broadcasting payload:', ['payload' => $payload]);
         return $payload;
     }
 }

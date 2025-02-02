@@ -19,11 +19,12 @@ class UserLeftDocument implements ShouldBroadcast
     {
         $this->user = $user;
         $this->documentId = $documentId;
-        \Log::info('UserLeftDocument event fired', ['user' => $user->id, 'documentId' => $documentId]);
     }
 
     public function broadcastOn()
     {
+        \Log::info('1232', ['user' => $this->documentId]);
+
         return new PresenceChannel('document.' . $this->documentId);
     }
 }

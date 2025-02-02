@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Document;
+use App\Models\DocumentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\DocumentUpdated;
@@ -22,9 +23,21 @@ class DocumentController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $document = Document::findOrFail($id);
         $document->update($request->all());
-        broadcast(new DocumentUpdated($document))->toOthers();
+
+        DocumentVersion::create([
+            'document_id' => $document->id,
+            'content' => $document->content,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        // \Log::info('1232', ['user' => $document]);
+
+        // broadcast(new UserLeftDocument(Auth::user(), 1))->toOthers();
+        
+        broadcast(new DocumentUpdated(Auth::user(), $document))->toOthers();
         return response()->json($document);
     }
 
@@ -37,7 +50,13 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        return response()->json($document);
+        $documents_versions = DocumentVersion::with('user')->get();
+        // dd($documents_versions);
+        return response()->json(
+            ['document' => $document, 
+            'documents_versions' =>$documents_versions]
+        );
+        // return response()->json($document);
     }
 
     public function joinDocument($documentId)

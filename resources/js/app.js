@@ -3,9 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
+import './styles/styles.css'
+
 // Configure axios defaults
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
