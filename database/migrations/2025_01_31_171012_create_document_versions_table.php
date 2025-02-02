@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('document_versions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('document_id');
+            $table->integer('version_id');
             $table->text('content');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

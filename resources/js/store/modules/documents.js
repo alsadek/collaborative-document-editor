@@ -94,28 +94,11 @@ export default {
                 console.log('Presence: users here:', users);
                 commit('setCollaborators', users);
             })
-            .joining((user) => {
-                console.log('Presence: user joined:', user);
-                commit('setCollaborators', [...state.collaborators, user]);
-            })
             .leaving((user) => {
                 console.log('Presence: user left:', user);
                 commit('setCollaborators', state.collaborators.filter(u => u.id !== user.id));
             });
 
-        window.Echo.join(`document.${documentId}`)
-            .notification((notification) => {
-                console.log('Notification received:', notification);
-            })
-            .listen('pusher:subscription_succeeded', (members) => {
-                console.log('Subscription succeeded:', members);
-            })
-            .listen('pusher:member_added', (member) => {
-                console.log('Member added:', member);
-            })
-            .listen('pusher:member_removed', (member) => {
-                console.log('Member removed:', member);
-            });
         }
         
     }

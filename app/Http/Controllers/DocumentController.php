@@ -27,16 +27,18 @@ class DocumentController extends Controller
         $document = Document::findOrFail($id);
         $document->update($request->all());
 
+        $lastVersion = DocumentVersion::where('document_id', $document->id)
+                ->orderBy('version_id', 'desc')
+                ->first();
+
+        $newVersionId = $lastVersion ? $lastVersion->version_id + 1 : 1;
         DocumentVersion::create([
             'document_id' => $document->id,
+            'version_id' => $newVersionId,
             'content' => $document->content,
             'user_id' => auth()->user()->id,
         ]);
 
-        // \Log::info('1232', ['user' => $document]);
-
-        // broadcast(new UserLeftDocument(Auth::user(), 1))->toOthers();
-        
         broadcast(new DocumentUpdated(Auth::user(), $document))->toOthers();
         return response()->json($document);
     }
@@ -50,7 +52,7 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        $documents_versions = DocumentVersion::with('user')->get();
+        $documents_versions = DocumentVersion::where('document_id', $id)->with('user')->get();
         // dd($documents_versions);
         return response()->json(
             ['document' => $document, 

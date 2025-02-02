@@ -2,21 +2,24 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
 
 // Importing components
-import DocumentList from '../components/documents/DocumentList.vue'
-import DocumentEditor from '../components/documents/DocumentEditor.vue'
-import DocumentView from '../components/documents/DocumentView.vue'
-import DocumentCreate from '../components/documents/DocumentCreate.vue'
+import DocumentList from '../pages/documents/DocumentList.vue'
+import DocumentEditor from '../pages/documents/DocumentEditor.vue'
+import DocumentView from '../pages/documents/DocumentView.vue'
+import DocumentCreate from '../pages/documents/DocumentCreate.vue'
+import Login from '../pages/auth/Login.vue'
+import Register from '../pages/auth/Register.vue'
+
 const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: () => import('../components/auth/Login.vue'),
+        component: () => Login,
         meta: { guest: true }
     },
     {
         path: '/register',
         name: 'Register',
-        component: () => import('../components/auth/Register.vue'),
+        component: () => Register,
         meta: { guest: true }
     },
     {

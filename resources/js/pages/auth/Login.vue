@@ -15,6 +15,7 @@
                                     type="email" 
                                     class="form-control" 
                                     id="email" 
+                                    autocomplete="email"
                                     placeholder="Enter your email" 
                                     required
                                 />
@@ -24,7 +25,8 @@
                                 <input 
                                     v-model="password" 
                                     type="password" 
-                                    class="form-control" 
+                                    class="form-control"
+                                    autocomplete="current-password"
                                     id="password" 
                                     placeholder="Enter your password" 
                                     required

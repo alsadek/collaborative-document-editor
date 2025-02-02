@@ -8,7 +8,7 @@ use App\Models\User;
 
 class DocumentVersion extends Model
 {
-    protected $fillable = ['document_id', 'content', 'user_id'];
+    protected $fillable = ['document_id', 'version_id', 'content', 'user_id'];
 
     public function document()
     {
