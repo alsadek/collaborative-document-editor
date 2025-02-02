@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Events;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -23,8 +22,6 @@ class UserLeftDocument implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        \Log::info('1232', ['user' => $this->documentId]);
-
         return new PresenceChannel('document.' . $this->documentId);
     }
 }

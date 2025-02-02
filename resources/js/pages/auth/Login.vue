@@ -7,6 +7,11 @@
                         <h4>Login</h4>
                     </div>
                     <div class="card-body">
+                        <!-- Display Error Message -->
+                        <div v-if="errorMessage" class="alert alert-danger text-center">
+                            {{ errorMessage }}
+                        </div>
+
                         <form @submit.prevent="submitLogin">
                             <div class="form-group mb-3">
                                 <label for="email">Email</label>
@@ -20,6 +25,7 @@
                                     required
                                 />
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="password">Password</label>
                                 <input 
@@ -32,10 +38,20 @@
                                     required
                                 />
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary btn-block"
+                                :disabled="isLoading"
+                            >
+                                {{ isLoading ? 'Logging in...' : 'Login' }}
+                            </button>
                         </form>
+
                         <div class="text-center mt-3">
-                            <a href="/register" class="btn btn-link">Don't have an account? Register</a>
+                            <router-link to="/register" class="btn btn-link">
+                                Don't have an account? Register
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -43,16 +59,22 @@
         </div>
     </div>
 </template>
+
 <script>
 export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            errorMessage: '',  // Store error messages
+            isLoading: false   // Loading state
         }
     },
     methods: {
         async submitLogin() {
+            this.errorMessage = '' // Reset error message
+            this.isLoading = true  // Start loading
+
             try {
                 await this.$store.dispatch('auth/login', {
                     email: this.email,
@@ -61,7 +83,11 @@ export default {
                 this.$router.push('/')
             } catch (error) {
                 console.error('Login failed', error)
-                // Handle login error (show message, etc.)
+                
+                // Set a user-friendly error message
+                this.errorMessage = error.message || 'Invalid email or password. Please try again.'
+            } finally {
+                this.isLoading = false  // Stop loading
             }
         }
     }

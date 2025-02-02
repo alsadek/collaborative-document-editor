@@ -1,4 +1,11 @@
 
+#app {
+    font-family: Arial, sans-serif;
+}
+.alert {
+    font-size: 14px;
+    padding: 10px;
+}
 .document-content {
     flex: 3;
     border: 1px solid #ddd;
@@ -71,4 +78,9 @@
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1; /* Ensure it appears above other elements */
+}
+
+.custom-nav{
+    --bs-bg-opacity: 1;
+    background-color: rgba(33,37,41, 0.03) !important;
 }

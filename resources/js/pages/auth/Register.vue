@@ -7,6 +7,16 @@
                         <h4>Register</h4>
                     </div>
                     <div class="card-body">
+                        <!-- Display Error Message -->
+                        <div v-if="errorMessage" class="alert alert-danger text-center">
+                            {{ errorMessage }}
+                        </div>
+
+                        <!-- Display Success Message -->
+                        <div v-if="successMessage" class="alert alert-success text-center">
+                            {{ successMessage }}
+                        </div>
+
                         <form @submit.prevent="submitRegistration">
                             <div class="form-group mb-3">
                                 <label for="name">Name</label>
@@ -19,6 +29,7 @@
                                     required
                                 />
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="email">Email</label>
                                 <input 
@@ -30,6 +41,7 @@
                                     required
                                 />
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="password">Password</label>
                                 <input 
@@ -41,6 +53,7 @@
                                     required
                                 />
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="password_confirmation">Confirm Password</label>
                                 <input 
@@ -52,10 +65,20 @@
                                     required
                                 />
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary btn-block"
+                                :disabled="isLoading"
+                            >
+                                {{ isLoading ? 'Registering...' : 'Register' }}
+                            </button>
                         </form>
+
                         <div class="text-center mt-3">
-                            <a href="/login" class="btn btn-link">Already have an account? Login</a>
+                            <router-link to="/login" class="btn btn-link">
+                                Already have an account? Login
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -71,11 +94,18 @@ export default {
             name: '',
             email: '',
             password: '',
-            password_confirmation: ''
+            password_confirmation: '',
+            errorMessage: '',  // Store error messages
+            successMessage: '', // Store success message
+            isLoading: false   // Loading state
         }
     },
     methods: {
         async submitRegistration() {
+            this.errorMessage = ''  // Reset errors
+            this.successMessage = '' // Reset success message
+            this.isLoading = true    // Start loading
+
             try {
                 await this.$store.dispatch('auth/register', {
                     name: this.name,
@@ -83,9 +113,17 @@ export default {
                     password: this.password,
                     password_confirmation: this.password_confirmation
                 })
-                this.$router.push('/')
+
+                this.successMessage = 'Registration successful! Redirecting...'
+                setTimeout(() => this.$router.push('/'), 2000) // Redirect after success
+
             } catch (error) {
                 console.error('Registration failed', error)
+                
+                // Display error message from API response
+                this.errorMessage = error.response?.data?.message || 'Registration failed. Please try again.'
+            } finally {
+                this.isLoading = false  // Stop loading
             }
         }
     }

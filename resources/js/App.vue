@@ -25,15 +25,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-/* Global styles */
-#app {
-    font-family: Arial, sans-serif;
-}
-
-.custom-nav{
-    --bs-bg-opacity: 1;
-    background-color: rgba(33,37,41, 0.03) !important;
-}
-</style>
