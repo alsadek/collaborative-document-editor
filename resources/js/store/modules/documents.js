@@ -73,7 +73,7 @@ export default {
                 encrypted: true,
                 auth: {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`, // Send token
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 },
             });

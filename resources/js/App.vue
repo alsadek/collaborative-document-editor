@@ -19,9 +19,9 @@ export default {
     },
     created() {
         // Attempt to fetch user on app initialization
-        if (this.isAuthenticated) {
-            this.$store.dispatch('auth/fetchUser')
-        }
+        // if (this.isAuthenticated) {
+        //     this.$store.dispatch('auth/fetchUser')
+        // }
     }
 }
 </script>

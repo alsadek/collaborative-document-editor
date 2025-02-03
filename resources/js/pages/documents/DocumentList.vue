@@ -5,7 +5,7 @@
                 <h2>Documents</h2>
                 <ul class="list-group">
                     <li v-for="document in documents" :key="document.id" class="list-group-item">
-                        <router-link :to="{ name: 'DocumentView', params: { id: document.id } }">
+                        <router-link :to="{ name: 'DocumentEditor', params: { id: document.id } }">
                             {{ document.title }}
                         </router-link>
                     </li>

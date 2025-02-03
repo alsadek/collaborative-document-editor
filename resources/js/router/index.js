@@ -62,13 +62,7 @@ router.beforeEach((to, from, next) => {
         } else {
             next()
         }
-    } else if (to.matched.some(record => record.meta.guest)) {
-        if (isAuthenticated) {
-            next('/')
-        } else {
-            next()
-        }
-    } else {
+    }else {
         next()
     }
 })

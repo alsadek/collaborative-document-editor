@@ -34,7 +34,7 @@ class DocumentUpdated implements ShouldBroadcast
     {
         $payload = [
             'user' => $this->user,
-            'documentId' => $this->document->id,
+            'document' => $this->document,
         ];
         return $payload;
     }

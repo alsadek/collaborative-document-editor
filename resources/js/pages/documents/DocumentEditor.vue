@@ -17,8 +17,7 @@
                     <div class="form-group mb-3">
                         <label for="content">Content</label>
                         <Toolbar @format="formatText"/>
-                        <div class="form-control" id="content" contenteditable="true" ref="editor" @input="updateContent" v-html="content" style="min-height: 200px; overflow: auto;"></div>
-
+                        <div class="form-control" id="content" contenteditable="true" ref="editor" @input="updateContent" style="min-height: 200px; overflow: auto;"></div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
                         Update Document
@@ -52,21 +51,19 @@ export default {
             content: ''
         }
     },
+    watch: {
+        content: {
+            handler(newContent) {
+                if (this.$refs.editor.innerHTML !== newContent) {
+                    this.$refs.editor.innerHTML = newContent;
+                }
+            },
+            deep: true
+        }
+    },
     methods: {
     updateContent() {
         this.content = this.$refs.editor.innerHTML;
-
-    this.$nextTick(() => {
-        const el = event.target;
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        range.selectNodeContents(el);
-        range.collapse(false); // Move cursor to the end
-
-        selection.removeAllRanges();
-        selection.addRange(range);
-    });
     },
     async submitDocument() {
         try {

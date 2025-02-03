@@ -14,9 +14,7 @@ export const documentMixin = {
         this.joinDocument(this.documentId);
     },
     
-    beforeUnmount() {
-        console.log('123456789');
-        
+    beforeUnmount() {        
         this.leaveDocument(this.documentId);
     },
     methods: {
